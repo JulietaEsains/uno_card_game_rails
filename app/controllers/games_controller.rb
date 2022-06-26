@@ -78,6 +78,15 @@ class GamesController < ApplicationController
     end
   end
 
+  # Quitar un punto de victoria a uno de los jugadores 
+  def decrease_wins_counter(game, player)
+    if (player == '1')
+      game.player_1_wins -= 1
+    elsif (player == '2')
+      game.player_2_wins -= 1
+    end
+  end
+      
   public
 
   # GET /games
@@ -115,8 +124,10 @@ class GamesController < ApplicationController
           play_card(game, updates[:card_index])
         when 'turn'
           toggle_turn(game)
-        when 'win'
+        when 'add win'
           increment_wins_counter(game, updates[:player])
+        when 'remove win'
+          decrease_wins_counter(game, updates[:player])
         end
 
       end
