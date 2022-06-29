@@ -86,6 +86,17 @@ class GamesController < ApplicationController
       game.player_2_wins -= 1
     end
   end
+
+  # Reiniciar los mazos para jugar nuevamente
+  def restart(game)
+    game.player_1_hand.each {|card| game.draw_card_pile = game.draw_card_pile.push(card)}
+    game.player_2_hand.each {|card| game.draw_card_pile = game.draw_card_pile.push(card)}
+    game.played_cards_pile.each {|card| game.draw_card_pile = game.draw_card_pile.push(card)}
+
+    game.player_1_hand = []
+    game.player_2_hand = []
+    game.played_cards_pile = []
+  end
       
   public
 
@@ -128,6 +139,8 @@ class GamesController < ApplicationController
           increment_wins_counter(game, updates[:player])
         when 'remove win'
           decrease_wins_counter(game, updates[:player])
+        when 'restart'
+          restart(game)
         end
 
       end
